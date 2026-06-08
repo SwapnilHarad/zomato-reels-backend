@@ -1,4 +1,4 @@
-const foodPartnerModel = require('../models/foodPartner.model');
+const foodPartnerModel = require('../models/foodpartner.model');
 // 1. WE ADDED THIS: Import the food model so we can search for the videos
 const foodModel = require('../models/food.model'); 
 
