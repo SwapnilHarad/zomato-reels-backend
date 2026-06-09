@@ -6,9 +6,11 @@ const multer = require("multer");
 
 const upload = multer({
     storage: multer.memoryStorage(),
+    limits: { fileSize: 50 * 1024 * 1024 } // Optional: limit video size to 50MB
 });
 
 // CREATE FOOD
+// Ensure your authFoodPartnerMiddleware is reading 'req.cookies.token'
 router.post(
     '/',
     authMiddleware.authFoodPartnerMiddleware,
@@ -17,6 +19,7 @@ router.post(
 );
 
 // GET ALL FOODS
+// Using authUserMiddleware here is correct for users to see the feed
 router.get(
     '/',
     authMiddleware.authUserMiddleware,

@@ -10,6 +10,8 @@ const foodPartnerRoutes = require('./routes/food-partner.routes');
 
 
 const app = express();
+app.set('trust proxy', 1); // add this line
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieparser());
 app.use(cors({
@@ -18,12 +20,12 @@ app.use(cors({
         "https://zomato-reels-frontend.vercel.app"
     ],
     credentials: true
-}))
+}));
 
 
 
 app.get("/", (req,res)=>{
-    res.send('Hello world'); 
+    res.send('Backend is working'); 
 })
 
 
