@@ -6,12 +6,11 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer'); 
 
 // --- PRODUCTION COOKIE OPTIONS ---
-// This ensures cookies work across domains (Render -> Vercel) and stay logged in for 24 hours.
 const cookieOptions = {
     httpOnly: true,
-    secure: true,        // MUST be true for HTTPS (Render/Vercel)
-    sameSite: "none",    // MUST be "none" for cross-origin cookies
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    secure: true,        
+    sameSite: "none",    
+    maxAge: 24 * 60 * 60 * 1000 
 };
 
 async function registerUser(req, res){
@@ -37,11 +36,11 @@ async function registerUser(req, res){
         id: user._id,
     }, process.env.JWT_SECRET)
 
-    // Apply standardized cookie options
     res.cookie("token", token, cookieOptions);
 
     res.status(201).json({
         message: "User Registered succesfully",
+        token: token, // 🌟 FIXED: Sending token for mobile bypass
         user:{
             _id: user._id,
             email: user.email,
@@ -77,6 +76,7 @@ async function loginUser (req, res){
 
     res.status(200).json({
         message: "Loggedin Succesfully",
+        token: token, // 🌟 FIXED: Sending token for mobile bypass
         user:{
             _id: user._id,
             email: user.email,
@@ -92,7 +92,6 @@ async function logoutUser (req, res){
     })
 }
 
-// --- NEW FORGOT PASSWORD LOGIC ---
 async function forgotPassword(req, res) {
     try {
         const { email } = req.body;
@@ -116,8 +115,6 @@ async function forgotPassword(req, res) {
             }
         });
 
-        // FIXED: Point this to your live Vercel Frontend URL using an environment variable
-        // Fallback to localhost if the environment variable isn't set
         const frontendURL = process.env.FRONTEND_URL || 'https://zomato-reels-frontend.vercel.app';
         const resetURL = `${frontendURL}/user/reset-password/${resetToken}`;
 
@@ -172,6 +169,7 @@ async function registerFoodPartner (req, res){
 
     res.status(201).json({
         message: "User Registered succesfully",
+        token: token, // 🌟 FIXED
         foodPartner:{
             _id: foodPartner._id,
             email: foodPartner.email,
@@ -210,6 +208,7 @@ async function loginFoodPartner(req, res){
     
     res.status(200).json({
         message: "Loggedin Succesfully",
+        token: token, // 🌟 FIXED
         foodPartner:{
             _id: foodPartner._id,
             email: foodPartner.email,
